@@ -18,4 +18,3 @@ add_executable(untitled src/main.cpp
         src/Viewer.cpp
         Headers/Viewer.h
 )
-target_link_libraries(philosophers pthread ${CURSES_LIBRARIES})
