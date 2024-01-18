@@ -19,8 +19,8 @@ void Viewer::init() {
 
     int column_width = (params.separator - params.x_margin) / 2;
 
-    mvwprintw(stdscr, params.y_margin / 2, params.x_max / 2 - 11);
-    mvwprintw(stdscr, params.y_max - params.y_margin / 2);
+    mvwprintw(stdscr, params.y_margin / 2, params.x_max / 2 - 11, "Header Line 1");
+    mvwprintw(stdscr, params.y_max - params.y_margin / 2, params.x_max / 2 - 11, "Footer Line");
 
     refresh();
 
