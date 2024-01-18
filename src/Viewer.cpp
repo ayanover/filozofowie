@@ -18,29 +18,31 @@ void Viewer::init() {
 
     int column_width = (params.separator - params.x_margin) / 2;
 
-    mvwprintw(stdscr, params.y_margin / 2, params.x_max / 2 - 11, "Header Line 1");
-    mvwprintw(stdscr, params.y_max - params.y_margin / 2, params.x_max / 2 - 11, "Footer Line");
+    mvwprintw(stdscr, params.y_margin / 2, params.x_max / 2 - 11, "");
+    mvwprintw(stdscr, params.y_max - params.y_margin / 2, params.x_max / 2 - 11, "Jakub Grych");
 
     refresh();
 
     window = derwin(stdscr, params.y_max - 2 * params.y_margin,
                     params.separator - params.x_margin, params.y_margin, params.x_margin);
+    box(window, 0, 0);
 
     wprintw(window, "Philosophers");
 
     mvwprintw(window, 2, 2, "Id");
     mvwprintw(window, 2, column_width, "State");
 
-    mvwhline(window, 4, 1, 0, params.separator - params.x_margin - 2);
-    mvwvline(window, 1, column_width - 2, 0, params.y_max - 2 * params.y_margin - 2);
+    mvwhline(window, 4, 1, ACS_HLINE, params.separator - params.x_margin - 2);
+    mvwvline(window, 1, column_width - 2, ACS_VLINE, params.y_max - 2 * params.y_margin - 2);
 
     for (int i = 0; i < PHILOSOPHERS_NUMBER; i++) {
-        mvwprintw(window, 2 * i + 5, 3, "%s", std::to_string(philosophers[i]->get_id()).c_str());
+        mvwprintw(window, 2 * i + 5, 3, "%d", philosophers[i]->get_id());
     }
 
     touchwin(window);
     wrefresh(window);
 }
+
 
 void Viewer::update_screen() {
     int column_width = (params.separator - params.x_margin) / 2;
