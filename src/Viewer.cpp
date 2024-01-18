@@ -3,8 +3,8 @@
 //
 
 #include <unistd.h>
-#include "../headers/Viewer.h"
-#include "../headers/ConstValues.h"
+#include "../Headers/Viewer.h"
+#include "../Headers/ConstValues.h"
 
 void Viewer::init() {
     initscr();

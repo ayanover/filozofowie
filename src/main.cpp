@@ -1,9 +1,9 @@
 #include <iostream>
 #include <thread>
-#include "../headers/Table.h"
-#include "../headers/Philosopher.h"
-#include "../headers/ConstValues.h"
-#include "../headers/Viewer.h"
+#include "../Headers/Table.h"
+#include "../Headers/Philosopher.h"
+#include "../Headers/ConstValues.h"
+#include "../Headers/Viewer.h"
 
 using namespace std;
 

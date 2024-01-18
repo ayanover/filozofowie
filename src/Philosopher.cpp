@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../headers/Philosopher.h"
-#include "../headers/ConstValues.h"
-#include "../headers/Enums.h"
+#include "../Headers/Philosopher.h"
+#include "../Headers/ConstValues.h"
+#include "../Headers/Enums.h"
 
 using namespace std;
 

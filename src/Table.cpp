@@ -2,8 +2,8 @@
 // Created by rexiv on 18.01.2024.
 //
 
-#include "../headers/Table.h"
-#include "../headers/ConstValues.h"
+#include "../Headers/Table.h"
+#include "../Headers/ConstValues.h"
 #include "../Headers/Philosopher.h"
 
 Table::Table() {
