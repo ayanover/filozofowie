@@ -7,9 +7,16 @@ using namespace std;
 
 using namespace std;
 
-Philosopher::Philosopher(Table &table, Fork &rightFork, Fork &leftFork)
-        : id(current_id++), table(table), right_fork(rightFork), left_fork(leftFork), life(&Philosopher::dine, this),
-          state(State::SLEEPING) {}
+Philosopher::Philosopher(
+    Table &table,
+    Fork &rightFork,
+    Fork &leftFork):
+    id(current_id++),
+    table(table),
+    right_fork(rightFork),
+    left_fork(leftFork),
+    life(&Philosopher::Dine, this),
+    state(State::SLEEPING) {}
 
 Philosopher::~Philosopher() {
     life.join();
