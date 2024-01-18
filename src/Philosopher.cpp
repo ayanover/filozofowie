@@ -49,8 +49,16 @@ void Philosopher::Think() {
 void Philosopher::Dine() {
     table.wait_for_all();
 
+    
     while (table.getPhilosophersNumber()) {
         Think();
+        {
+            std::unique_lock<std::mutex> lock(table.mutex);
+            if (table.getCurrentPhilosopher() != id) {
+                continue;
+            }
+            table.moveToNextPhilosopher();
+        }
         Eat();
     }
 }
