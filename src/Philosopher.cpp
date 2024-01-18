@@ -35,6 +35,8 @@ void Philosopher::Eat() {
 
     chrono::milliseconds eating_time(EAT_TIME);
     this_thread::sleep_for(eating_time);
+    
+    cv.notify_all();
 }
 
 void Philosopher::Think() {
@@ -46,10 +48,10 @@ void Philosopher::Think() {
 
 void Philosopher::Dine() {
     table.wait_for_all();
-
-    
     while (table.getPhilosophersNumber()) {
         Think();
+        std::unique_lock<std::mutex> lock(mutex);
+        cv.wait(lock, [this]() { return state == State::WAITING; });
         Eat();
     }
 }
