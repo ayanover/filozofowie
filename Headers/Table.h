@@ -23,11 +23,11 @@ class Table {
             readyPhilosophersNumber = number;
         }
         void wait_for_all();
+        std::vector<std::unique_ptr<Fork> > forks;
 
     private:
         std::condition_variable cv;
         std::mutex cv_m;
-        std::vector<std::unique_ptr<Fork> > forks;
         int readyPhilosophersNumber = 0;
 };
 
