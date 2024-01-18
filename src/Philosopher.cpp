@@ -5,8 +5,6 @@
 
 using namespace std;
 
-using namespace std;
-
 Philosopher::Philosopher(
     Table &table,
     Fork &rightFork,
