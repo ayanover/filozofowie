@@ -27,6 +27,8 @@ class Philosopher {
         }
 
         State get_state() { return state; }
+        std::mutex mutex;
+        std::condition_variable cv;
 
     private:
         int id;
