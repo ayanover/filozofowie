@@ -9,7 +9,6 @@
 void Viewer::init() {
     initscr();
     noecho(); // no user input is being shown on the screen
-
     box(stdscr, 0, 0);
 
     getmaxyx(stdscr, params.y_max, params.x_max);
