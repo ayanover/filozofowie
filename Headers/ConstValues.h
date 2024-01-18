@@ -6,8 +6,8 @@
 #define CONSTVALUES_H
 
 #define PHILOSOPHERS_NUMBER 10
-#define THINK_TIME 150
-#define EAT_TIME 200
+#define THINK_TIME 300
+#define EAT_TIME 400
 #define FEAST_TIME 100
 
 #endif //CONSTVALUES_H
