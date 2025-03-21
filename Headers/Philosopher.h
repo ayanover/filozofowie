@@ -1,42 +1,36 @@
-//
-// Created by rexiv on 18.01.2024.
-//
-
 #ifndef PHILOSOPHER_H
 #define PHILOSOPHER_H
 
-#include <string>
 #include <thread>
-#include "Fork.h"
+#include <mutex>
 #include "Table.h"
+#include "Fork.h"
 #include "Enums.h"
 
-static int current_id = 0;
-
 class Philosopher {
-    public:
+private:
+    static int current_id;
+    
+    int id;
+    Table& table;
+    Fork& left_fork;
+    Fork& right_fork;
+    std::thread life;
+    State state;
+    int meals_eaten;
+    mutable std::mutex mutex;
 
-        Philosopher(Table &table, Fork &rightFork, Fork &leftFork);
-        ~Philosopher();
+    void Eat();
+    void Think();
+    void Dine();
 
-        void Dine();
-        void Think();
-        void Eat();
-        int get_id() {
-            return id;
-        }
+public:
+    Philosopher(Table& table, Fork& leftFork, Fork& rightFork);
+    ~Philosopher();
 
-        State get_state() { return state; }
-        std::mutex mutex;
-        std::condition_variable cv;
-
-    private:
-        int id;
-        volatile State state;
-        Table &table;
-        Fork &left_fork;
-        Fork &right_fork;
-        std::thread life;
+    int get_id() const { return id; }
+    State get_state() const;
+    int get_meals_eaten() const;
 };
 
-#endif //PHILOSOPHER_H
+#endif // PHILOSOPHER_H

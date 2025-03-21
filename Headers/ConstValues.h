@@ -1,13 +1,10 @@
-//
-// Created by rexiv on 16.01.2024.
-//
+#ifndef CONST_VALUES_H
+#define CONST_VALUES_H
 
-#ifndef CONSTVALUES_H
-#define CONSTVALUES_H
+const int PHILOSOPHERS_NUMBER = 5;
+const int FEAST_TIME = 60;
+const int EAT_TIME = 1000;
+const int THINK_TIME = 2000;
+const int UPDATE_INTERVAL = 500;
 
-#define PHILOSOPHERS_NUMBER 10
-#define THINK_TIME 300
-#define EAT_TIME 400
-#define FEAST_TIME 100
-
-#endif //CONSTVALUES_H
+#endif

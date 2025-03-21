@@ -1,34 +1,27 @@
-//
-// Created by rexiv on 16.01.2024.
-//
-
 #ifndef TABLE_H
 #define TABLE_H
 
-
 #include <vector>
 #include <memory>
+#include <mutex>
 #include <condition_variable>
 #include "Fork.h"
 
-
 class Table {
-    public:
-        Table();
-        ~Table();
-        int getPhilosophersNumber() {
-            return readyPhilosophersNumber;
-        }
-        void setPhilosophersNumber(int number) {
-            readyPhilosophersNumber = number;
-        }
-        void wait_for_all();
-        std::vector<std::unique_ptr<Fork> > forks;
+private:
+    int philosophers_number;
+    std::mutex mutex;
+    std::condition_variable cv;
 
-    private:
-        std::condition_variable cv;
-        std::mutex cv_m;
-        int readyPhilosophersNumber = 0;
+public:
+    std::vector<std::shared_ptr<Fork>> forks;
+
+    Table();
+    ~Table();
+
+    int getPhilosophersNumber();
+    void setPhilosophersNumber(int number);
+    void wait_for_all();
 };
 
-#endif //TABLE_H
+#endif // TABLE_H

@@ -4,8 +4,6 @@ project(philosophers)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Threads REQUIRED)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
 
 add_executable(untitled src/main.cpp
         Headers/Table.h
@@ -15,6 +13,6 @@ add_executable(untitled src/main.cpp
         Headers/Philosopher.h
         Headers/Enums.h
         src/Table.cpp
-        src/Viewer.cpp
-        Headers/Viewer.h
+        src/ConsoleViewer.cpp
+        Headers/ConsoleViewer.h
 )

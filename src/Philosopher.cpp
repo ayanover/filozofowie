@@ -1,57 +1,84 @@
 #include <iostream>
+#include <chrono>
 #include "../Headers/Philosopher.h"
 #include "../Headers/ConstValues.h"
-#include "../Headers/Enums.h"
 
-using namespace std;
+int Philosopher::current_id = 0;
 
 Philosopher::Philosopher(
-    Table &table,
-    Fork &rightFork,
-    Fork &leftFork):
+    Table& table,
+    Fork& leftFork,
+    Fork& rightFork):
     id(current_id++),
     table(table),
-    right_fork(rightFork),
     left_fork(leftFork),
+    right_fork(rightFork),
     life(&Philosopher::Dine, this),
-    state(State::SLEEPING) {}
+    state(State::SLEEPING),
+    meals_eaten(0) {}
 
 Philosopher::~Philosopher() {
-    life.join();
+    if (life.joinable()) {
+        life.join();
+    }
+}
+
+State Philosopher::get_state() const {
+    std::lock_guard<std::mutex> lock(mutex);
+    return state;
+}
+
+int Philosopher::get_meals_eaten() const {
+    std::lock_guard<std::mutex> lock(mutex);
+    return meals_eaten;
 }
 
 void Philosopher::Eat() {
-    if (&left_fork == &right_fork)
-        cerr << "Forks must be the same!";
+    if (&left_fork == &right_fork) {
+        std::cerr << "Forks must be different!" << std::endl;
+        return; // Exit the method if forks are the same
+    }
 
-    state = State::WAITING;
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        state = State::WAITING;
+    }
 
-    lock(left_fork.mutex, right_fork.mutex);
+    // Lock both forks atomically to prevent deadlock
+    std::lock(left_fork.mutex, right_fork.mutex);
 
-    lock_guard<mutex> left_lock(left_fork.mutex, adopt_lock);
-    lock_guard<mutex> right_lock(right_fork.mutex, adopt_lock);
+    std::lock_guard<std::mutex> left_lock(left_fork.mutex, std::adopt_lock);
+    std::lock_guard<std::mutex> right_lock(right_fork.mutex, std::adopt_lock);
 
-    state = State::EATING;
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        state = State::EATING;
+    }
 
-    chrono::milliseconds eating_time(EAT_TIME);
-    this_thread::sleep_for(eating_time);
-    
-    cv.notify_all();
+    std::chrono::milliseconds eating_time(EAT_TIME);
+    std::this_thread::sleep_for(eating_time);
+
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        state = State::SLEEPING;
+        meals_eaten++;
+    }
 }
 
 void Philosopher::Think() {
-    state = State::THINKING;
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        state = State::THINKING;
+    }
 
-    chrono::milliseconds thinking_time(THINK_TIME);
-    this_thread::sleep_for(thinking_time);
+    std::chrono::milliseconds thinking_time(THINK_TIME);
+    std::this_thread::sleep_for(thinking_time);
 }
 
 void Philosopher::Dine() {
     table.wait_for_all();
     while (table.getPhilosophersNumber()) {
         Think();
-        std::unique_lock<std::mutex> lock(mutex);
-        cv.wait(lock, [this]() { return state == State::WAITING; });
         Eat();
     }
 }
